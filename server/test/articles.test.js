@@ -27,11 +27,6 @@ describe('API /articles', () => {
               expect(res.body).to.have.property('message');
               expect(res.body).to.have.property('data');
               expect(res.body.data).to.be.an('array');
-
-
-              // expect(res.body).to.have.deep.property('title');
-              // expect(res.body).to.have.deep.property('author');
-              // expect(res.body).to.have.deep.property('text');
               done();
             }
           })
