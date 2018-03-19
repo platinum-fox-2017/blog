@@ -6,8 +6,13 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 const app = 'http://localhost:3000'
-const userId = 'placeholder'
+const userId = '5aaf9b5f370e3561bdcb9074'
 const articleId = 'placeholder'
+const jwtToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwMjE0MDk4NzkzNjc3NTQ3IiwibmFtZSI6IkZyYW5zaXNrdXMgVGVkZHkiLCJlbWFpbCI6ImFpbnNvcGhvdXJlQHlhaG9vLmNvbSIsImdlbmRlciI6Im1hbGUiLCJwaWN0dXJlIjp7ImRhdGEiOnsiaGVpZ2h0IjoxNjAsImlzX3NpbGhvdWV0dGUiOmZhbHNlLCJ1cmwiOiJodHRwczovL3Njb250ZW50Lnh4LmZiY2RuLm5ldC92L3QxLjAtMS9jMC4zMC4xNjAuMTYwL3AxNjB4MTYwLzE5MjAxNDlfMTAyMDI1MzI3MDEyNTI0NjVfMTI4MzQyODMwM19uLmpwZz9vaD02YzM3OWUxNjEzNTFjY2VmYjE0MWJjZDUwNWI2OWRmNiZvZT01QjM1QjZCNyIsIndpZHRoIjoxNjB9fSwiaWF0IjoxNTIxNDU3MzU0fQ.wSnLk3l3iZ3xWrPH5QVeP-jsdb-11gbR7OHkYM4CR4g'
+
+
+// res.body.message
+// res.body.datas
 
 describe('API /article', () => {
 
@@ -15,15 +20,17 @@ describe('API /article', () => {
     it('should return all users recent articles, limit 10', (done) => {
       chai.request(app)
         .get(`/article/user/${userId}`)
+        .set('token', jwtToken)
         .end(function (err, res) {
+          console.log(res.body);
            should.not.exist(err);
            res.should.have.status(200);
            should.exist(res);
-           res.should.be.an('object');
-           res.should.have.property('message');
-           res.should.have.property('articles');
-           res.message.should.be.a('string');
-           res.articles.should.have.lengthOf.below(11);
+           res.body.should.be.an('object');
+           res.body.should.have.property('message');
+           res.body.should.have.property('articles');
+           res.body.message.should.be.a('string');
+           res.body.articles.should.have.lengthOf.below(11);
            done()
 
            // status should be 200
@@ -45,55 +52,60 @@ describe('API /article', () => {
       chai.request(app)
         .post(`/article/post/${userId}`)
         .type('form')
-        .attach('field', fs.readFileSync('test.png'), 'test.png')
+        .set('token', jwtToken)
+        // .attach('field', fs.readFileSync('test.png'), 'test.png')
         .send(send)
         .end(function (err, res) {
-           should.not.exist(err);
-           res.should.have.status(201);
-           should.exist(res);
-           res.should.be.an('object');
-           res.should.have.property('message');
-           res.should.have.property('newArticle');
-           res.message.should.be.a('string');
-           res.newArticle.should.be.an('object');
-           res.newArticle.should.have.property('title');
-           res.newArticle.should.have.property('text');
-           res.newArticle.should.have.property('imgUrl');
-           res.newArticle.title.should.be.equal(send.title)
-           res.newArticle.text.should.be.equal(send.text)
-           done()
+          console.log(res.body);
+          // console.log(res.headers);
+          should.not.exist(err);
+          should.exist(res);
+          res.should.have.status(201);
+          res.body.should.be.an('object');
+          res.body.should.have.property('message');
+          res.body.should.have.property('newArticle');
+          res.body.message.should.be.a('string');
+          res.body.newArticle.should.be.an('object');
+          res.body.newArticle.should.have.property('title');
+          res.body.newArticle.should.have.property('text');
+          res.body.newArticle.should.have.property('imgUrl');
+          res.body.newArticle.title.should.be.equal(send.title)
+          res.body.newArticle.text.should.be.equal(send.text)
+          res.body.newArticle.userId.should.be.equal(userId)
+          done()
         });
 
-      // status should be 201
-      // data should be an object
+        // status should be 201
+        // data should be an object
     })
   })
 
   describe('PUT /article/edit/:articleId', () => {
     it('data send should match output sent by server', (done) => {
       let update = {
-        title : 'PH Title',
+        title : 'PH Title updated',
         text : 'lorem ipsum stuff over here',
       };
+      let articleId = '';
       chai.request(app)
-        .put(`/article/edit/${userId}`)
+        .put(`/article/edit/${articleId}`)
         .type('form')
-        .attach('field', fs.readFileSync('test.png'), 'test.png')
+        // .attach('field', fs.readFileSync('test.png'), 'test.png')
         .send(update)
         .end(function (err, res) {
            should.not.exist(err);
            res.should.have.status(200);
            should.exist(res);
-           res.should.be.an('object');
-           res.should.have.property('message');
-           res.should.have.property('updatedArticle');
-           res.message.should.be.a('string');
-           res.updatedArticle.should.be.an('object');
-           res.updatedArticle.should.have.property('title');
-           res.updatedArticle.should.have.property('text');
-           res.updatedArticle.should.have.property('imgUrl');
-           res.updatedArticle.title.should.be.equal(send.title)
-           res.updatedArticle.text.should.be.equal(send.text)
+           res.body.should.be.an('object');
+           res.body.should.have.property('message');
+           res.body.should.have.property('updatedArticle');
+           res.body.message.should.be.a('string');
+           res.body.updatedArticle.should.be.an('object');
+           res.body.updatedArticle.should.have.property('title');
+           res.body.updatedArticle.should.have.property('text');
+           res.body.updatedArticle.should.have.property('imgUrl');
+           res.bodyupdatedArticle.title.should.be.equal(send.title)
+           res.body.updatedArticle.text.should.be.equal(send.text)
            done()
         });
     })
@@ -108,8 +120,8 @@ describe('API /article', () => {
            res.should.have.status(200);
            should.exist(res);
            res.should.be.an('object');
-           res.should.have.property('message');
-           res.message.should.be.a('string');
+           res.body.should.have.property('message');
+           res.body.message.should.be.a('string');
            done()
         });
     })
@@ -125,7 +137,7 @@ describe('API /user', () => {
   })
 
   describe('POST /user/post', () => {
-    
+
   })
 
   describe('PUT /user/edit', () => {
