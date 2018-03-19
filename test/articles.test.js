@@ -6,8 +6,6 @@ chai.use(chaiHttp)
 
 const baseUrl = 'http://localhost:3000'
 
-
-
 describe('API /articles' , () => {
 
     const dummy = {

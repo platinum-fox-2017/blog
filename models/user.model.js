@@ -4,6 +4,11 @@ const bycrypt = require('bcrypt')
 const saltRounds = 10
 
 const userSchema = new Schema({
+    username: {
+        type: String,
+        required: 'Username required',
+        unique: [true, 'Please use other username']
+    },
     email: {
         type: String,
         trim: true,
