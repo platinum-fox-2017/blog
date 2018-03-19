@@ -10,7 +10,7 @@ const token = require('../middlewares/token.middleware');
 chai.use(chaiHttp);
 
 const expect = chai.expect;
-const app = process.env.BASE_URL;
+const app = 'http://localhost:3000';
 
 describe('API /users', () => {
     let id = null;
@@ -33,9 +33,7 @@ describe('API /users', () => {
                     expect(res).to.have.status(201);
                     expect(res.body).haveOwnProperty('message').to.be.a('string').equal('Insert new user success');
                     expect(res.body).haveOwnProperty('data').to.be.an('object').contains({
-                        _id: user._id,
                         name: user.name,
-                        password: user.password,
                         email: user.email
                     });
                     done();
@@ -43,10 +41,10 @@ describe('API /users', () => {
         });
     });
 
-    describe('POST /login', () => {
+    describe('POST /users/login', () => {
         it('#SUCCESS Login user', done => {
             chai.request(app)
-                .post('/login')
+                .post('/users/login')
                 .type('form')
                 .send({
                     email: user.email,
@@ -56,26 +54,20 @@ describe('API /users', () => {
                     expect(err).to.be.null;
                     expect(res).to.have.status(200);
                     expect(res.body).haveOwnProperty('message').to.be.a('string').equal('Login success');
-                    expect(res.body).haveOwnProperty('headers').to.be.an('object').contains({
-                        token: token.generate({
-                            id: id,
-                            ...user
-                        })
-                    });
+                    expect(res.body).haveOwnProperty('token').to.be.an('string');
                     done();
                 });
         });
 
         it('#ERROR Login user', done => {
             chai.request(app)
-                .post('/login')
+                .post('/users/login')
                 .type('form')
                 .send({
-                    email: '',
-                    password: ''
+                    email: 'qwe',
+                    password: '123'
                 })
                 .end((err, res) => {
-                    expect(err).to.be.null;
                     expect(res).to.have.status(401);
                     expect(res.body).haveOwnProperty('message').to.be.a('string').equal('Login gagal');
                     done();

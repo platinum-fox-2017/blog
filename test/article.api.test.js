@@ -4,7 +4,7 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
 const expect = chai.expect;
-const app = process.env.BASE_URL;
+const app = 'http://localhost:3000';
 
 describe('API /articles', () => {
     let id = null;
@@ -21,12 +21,11 @@ describe('API /articles', () => {
                 .send(article)
                 .end((err, res) => {
                     id = res.body.data._id;
-
+                    
                     expect(err).to.be.null;
                     expect(res).to.have.status(201);
                     expect(res.body).haveOwnProperty('message').to.be.a('string').equal('Insert new article success');
                     expect(res.body).haveOwnProperty('data').to.be.an('object').contains({
-                        _id: article._id,
                         title: article.title,
                         description: article.description
                     });
@@ -62,7 +61,6 @@ describe('API /articles', () => {
                     expect(res).to.have.status(200);
                     expect(res.body).haveOwnProperty('message').to.be.a('string').equal('Update article success');
                     expect(res.body).haveOwnProperty('data').to.be.an('object').contains({
-                        _id: article._id,
                         title: article.title,
                         description: article.description
                     });
