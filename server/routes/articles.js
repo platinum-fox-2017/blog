@@ -1,11 +1,12 @@
 'use strict'
 
 const router = require('express').Router();
-const {articleReadAll, articleCreate, articleUpdate, articleDelete} = require('../controllers/articles.controller');
+const {articleCreate, articleReadByAuthor, articleUpdate, articleDelete} = require('../controllers/articles.controller');
+const {verify} = require('../middlewares/auth');
 
-router.get('/', articleReadAll);
-router.post('/', articleCreate);
-router.put('/', articleUpdate);
-router.delete('/', articleDelete);
+router.get('/', verify, articleReadByAuthor);
+router.post('/', verify, articleCreate);
+router.put('/', verify, articleUpdate);
+router.delete('/', verify, articleDelete);
 
 module.exports = router;

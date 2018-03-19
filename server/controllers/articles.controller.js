@@ -1,6 +1,8 @@
 'use strict'
 
-const Article = require('../models/article');
+const jwt = require('jsonwebtoken');
+const Article = require('../models/Article');
+const User = require('../models/User');
 
 module.exports = {
     articleReadAll: (req, res) => {
@@ -17,11 +19,27 @@ module.exports = {
             })
     },
 
+    articleReadByAuthor: (req, res) => {
+        let decoded = jwt.verify(req.headers.apptoken, process.env.JWT);        
+        Article
+            .find({author: decoded.id})
+            .exec()
+            .then((response) => {
+                res.status(200).json({
+                    articles:response
+                });
+            })
+            .catch((err) => {
+                res.status(500).send(err);
+            })
+    },
+
     articleCreate: (req, res) => {
+        let decoded = jwt.verify(req.headers.apptoken, process.env.JWT);        
         let newArticle = new Article({
             title: req.body.title,
             description: req.body.description,
-            author: req.body.author
+            author: decoded.id
         });
         newArticle
             .save()
@@ -41,26 +59,36 @@ module.exports = {
     },
 
     articleUpdate: (req, res) => {
+        let decoded = jwt.verify(req.headers.apptoken, process.env.JWT);        
         Article
             .findById(req.headers.articleid)
             .then((article) => {
-                let updateValue = {
-                    title: req.body.title || article.title,
-                    description: req.body.description || article.description,
-                    author: req.body.author || article.author
-                }
-                Article
-                    .update(
-                        { _id: article._id},
-                        {$set: updateValue}
-                    )
-                    .then((response) => {
-                        return res.status(200).json({
-                            message: "Article Successfully Updated",
-                            articles: response
+                if(article.author == decoded.id) {
+                    let updateValue = {
+                        title: req.body.title || article.title,
+                        description: req.body.description || article.description,
+                        author: req.body.author || article.author
+                    }
+                    Article
+                        .update(
+                            { _id: article._id},
+                            {$set: updateValue}
+                        )
+                        .then((response) => {
+                            return res.status(200).json({
+                                message: "Article Successfully Updated",
+                                articles: response
+                            })
                         })
-                    })
-                    .catch((err) => {reject()})
+                        .catch((err) => {
+                            res.status(500).json({
+                                message: 'Error!!',
+                                err
+                            });
+                        })
+                } else {
+                    reject();
+                }
             })
             .catch((err) => {
                 res.status(500).json({
@@ -71,16 +99,31 @@ module.exports = {
     },
 
     articleDelete: (req, res) => {
+        let decoded = jwt.verify(req.headers.apptoken, process.env.JWT);
         Article
-            .remove({_id: req.headers.articleid})
-            .then((response) => {
-                res.status(200).json({
-                    message: 'Article deleted',
-                    response
-                })
+            .findById(req.headers.articleid)
+            .then((article) => {
+                if(article.author == decoded.id) {
+                    Article
+                        .remove({_id: req.headers.articleid})
+                        .then((response) => {
+                            res.status(200).json({
+                                message: 'Article deleted',
+                                response
+                            })
+                        })
+                        .catch((err) => {
+                            res.status(500).send(err)
+                        })
+                } else {
+                    reject();
+                }
             })
             .catch((err) => {
-                res.status(500).send(err)
-            })
+                res.status(500).json({
+                    message: 'Error!!',
+                    err
+                });
+            });
     }
 }

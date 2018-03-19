@@ -1,6 +1,7 @@
 'use strict'
 
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
     userCreate: (req, res) => {
@@ -44,8 +45,9 @@ module.exports = {
     },
 
     userReadById: (req, res) => {
+        let decoded = jwt.verify(req.headers.apptoken, process.env.JWT);
         User
-            .findById(req.headers.userid)
+            .findById(decoded.id)
             .then((user) => {
                 if(user) {
                     res.status(200).json({
@@ -65,8 +67,9 @@ module.exports = {
     },
 
     userUpdate: (req, res) => {
+        let decoded = jwt.verify(req.headers.apptoken, process.env.JWT);        
         User
-            .findById(req.headers.userid)
+            .findById(decoded.id)
             .then((user) => {
                 let updateValue = {
                     first_name: req.body.first_name || user.first_name,
@@ -95,8 +98,9 @@ module.exports = {
     },
 
     userDelete: (req, res) => {
+        let decoded = jwt.verify(req.headers.apptoken, process.env.JWT);        
         User
-            .remove({_id: req.headers.userid})
+            .remove({_id: decoded.id})
             .then((response) => {
                 res.status(200).json({
                     message: "User successfully deleted",

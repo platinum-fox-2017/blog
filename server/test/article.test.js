@@ -6,26 +6,78 @@ chai.use(chaiHttp);
 // const app = require('../app');
 const app = 'localhost:3000';
 
+let user = {
+    first_name: 'First Name',
+    last_name: 'Lorem',
+    email: 'first.name@gmail.com',
+    password: '12345'
+}
+
 let article = {
     title: 'Test Title',
-    description: 'Lorem Ipsum',
-    author: 'H8'
+    description: 'Lorem Ipsum'
 }
 
 let articleUpdate = {
     title: 'Little Princess',
-    description: 'The litle kid who try to protect his flower',
-    author: 'Antoine de Saint-Exupéry'
+    description: 'The litle kid who try to protect his flower'
 }
 
-var articleid;
+let articleid;
+let apptoken;
+let userid;
 
 describe('Article API', () => {
+    it('POST /users', (done) => {    
+        chai.request(app)
+        .post('/users')
+        .type('form')
+        .send(user)
+        .end((err, res) => {
+            expect(res).to.have.status(201);            
+            expect(res.body).to.ownProperty('message')
+                .to.be.a('string')
+                .eql('User Successfully Created');
+            expect(res.body).to.ownProperty('user')
+                .to.be.a('object');
+            expect(res.body.user).to.ownProperty('first_name')
+                .to.be.a('string')
+                .eql(user.first_name);
+            expect(res.body.user).to.ownProperty('last_name')
+                .to.be.a('string')
+                .eql(user.last_name);
+            expect(res.body.user).to.ownProperty('email')
+                .to.be.a('string')
+                .eql(user.email);
+            expect(res.body.user).to.ownProperty('password')
+                .to.be.a('string')
+                .to.not.eql(user.password);
+            expect(res.body.user).to.ownProperty('_id')
+                .to.be.a('string');
+            userid=res.body.user._id;
+            done();
+        })
+    });
+
+    it('Login', (done) => {
+        chai.request(app)
+        .post('/login')
+        .send(user)
+        .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.ownProperty('apptoken')
+                .to.be.a('string');
+            apptoken = res.body.apptoken;
+            done()
+        })
+    }),
+
     it('POST /articles', (done) => {
         chai.request(app)
         .post('/articles')
         .type('form')
         .send(article)
+        .set('apptoken', apptoken)        
         .end((err, res) => {
             expect(res).to.have.status(201);            
             expect(res.body).to.ownProperty('message')
@@ -41,7 +93,7 @@ describe('Article API', () => {
                 .eql(article.description);
             expect(res.body.articles).to.ownProperty('author')
                 .to.be.a('string')
-                .eql(article.author);
+                .eql(userid);
             expect(res.body.articles).to.ownProperty('_id')
                 .to.be.a('string');
             articleid=res.body.articles._id;
@@ -52,11 +104,11 @@ describe('Article API', () => {
     it('Get /articles', (done) => {
         chai.request(app)
         .get('/articles')
+        .set('apptoken', apptoken)        
         .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res.body).to.ownProperty('articles')
-                .to.be.an('array')
-                .to.have.lengthOf(1);
+                .to.be.an('array');
             done();
         })
     });
@@ -65,6 +117,7 @@ describe('Article API', () => {
         chai.request(app)
         .put('/articles')
         .set('articleid', articleid)
+        .set('apptoken', apptoken)
         .send(articleUpdate)
         .end((err, res) => {
             expect(res).to.have.status(200);            
@@ -73,11 +126,12 @@ describe('Article API', () => {
                 .eql('Article Successfully Updated');
             done();
         })
-    })
+    });
 
     it('Delete /articles', (done) => {
         chai.request(app)
         .delete('/articles')
+        .set('apptoken', apptoken)        
         .set('articleid', articleid)
         .end((err, res) => {
             expect(res).to.have.status(200);
@@ -86,5 +140,18 @@ describe('Article API', () => {
                 .eql('Article deleted');
             done();
         })
-    })
+    });
+
+    it('Delete /users', (done) => {
+        chai.request(app)
+        .delete('/users')
+        .set('apptoken', apptoken)
+        .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body.message)
+                .to.be.a('string')
+                .eql('User successfully deleted');
+            done();
+        })
+    });
 })

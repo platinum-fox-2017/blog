@@ -19,7 +19,8 @@ let userUpdate = {
     author: 'Antoine de Saint-Exupéry'
 }
 
-var userid;
+let userid;
+let apptoken;
 
 describe('User API', () => {
     it('POST /users', (done) => {    
@@ -52,30 +53,39 @@ describe('User API', () => {
             done();
         })
     });
+
+    it('Login', (done) => {
+        chai.request(app)
+        .post('/login')
+        .send(user)
+        .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.ownProperty('apptoken')
+                .to.be.a('string');
+            apptoken = res.body.apptoken;
+            done()
+        })
+    }),
     
     it('Get /users', (done) => {
         chai.request(app)
         .get('/users')
-        .set('userid', userid)        
+        // .set('userid', userid)
+        .set('apptoken', apptoken)       
         .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res.body).to.ownProperty('message')
-                .to.be.a('string')
-                .eql(`Welcome ${user.first_name}`);
+                .to.be.a('string');
             expect(res.body).to.ownProperty('user')
                 .to.be.a('object');
             expect(res.body.user).to.ownProperty('first_name')
-                .to.be.a('string')
-                .eql(user.first_name);
+                .to.be.a('string');
             expect(res.body.user).to.ownProperty('last_name')
-                .to.be.a('string')
-                .eql(user.last_name);
+                .to.be.a('string');
             expect(res.body.user).to.ownProperty('email')
-                .to.be.a('string')
-                .eql(user.email);
+                .to.be.a('string');
             expect(res.body.user).to.ownProperty('password')
-                .to.be.a('string')
-                .to.not.eql(user.password);
+                .to.be.a('string');
             expect(res.body.user).to.ownProperty('_id')
                 .to.be.a('string');
             done();
@@ -86,7 +96,8 @@ describe('User API', () => {
         chai.request(app)
         .put('/users')
         .send(userUpdate)
-        .set('userid', userid)
+        .set('apptoken', apptoken)       
+        // .set('userid', userid)
         .end((err, res) => {
             expect(res).to.have.status(200);            
             expect(res.body).to.ownProperty('message')
@@ -99,7 +110,8 @@ describe('User API', () => {
     it('Delete /users', (done) => {
         chai.request(app)
         .delete('/users')
-        .set('userid', userid)
+        .set('apptoken', apptoken)      
+        // .set('userid', userid)
         .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res.body.message)
