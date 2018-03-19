@@ -1,7 +1,6 @@
 'use strict'
 
 const User = require('../models/User');
-const jwt = require('jsonwebtoken');
 
 module.exports = {
     userCreate: (req, res) => {
