@@ -4,8 +4,8 @@ const User = require('../models/user.js');
 module.exports = {
 
   getArticle: (req, res) => {
-
-    User.find({
+    console.log('starting art controller');
+    User.findOne({
       name: req.decoded.name,
       email: req.decoded.email
     })
@@ -17,6 +17,7 @@ module.exports = {
           message: "No matching user was found."
         })
       }
+      console.log(foundUser._id);
       Article.find({userId: foundUser._id})
         .limit(10)
         .exec().then(foundArticles => {
@@ -25,7 +26,6 @@ module.exports = {
           if (foundArticles.length < 1) {
             return res.status(404).json({
               message: 'No article found'
-
             })
           }
           res.status(200).json({
@@ -48,6 +48,29 @@ module.exports = {
     })
 
 
+  },
+
+  getOneArticle: (req, res) => {
+    console.log('======================================================================================================================');
+    console.log(req.params);
+    Article.findOne({_id: req.params.articleId})
+    .exec().then(foundArticle => {
+      console.log(foundArticle);
+      if (!foundArticle) {
+        return res.status(404).json({
+          message: "No matching Article was found."
+        })
+      }
+      res.status(200).json({
+        message: 'found article',
+        article: foundArticle
+      })
+    }).catch(err => {
+      res.status(500).json({
+        message: 'Server error on finding User',
+        err: err
+      })
+    })
   },
 
   createArticle: (req, res) => {

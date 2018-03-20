@@ -2,8 +2,8 @@ const jwt = require('jsonwebtoken')
 
 function getJWT (req, res, next) {
   const data = req.body.response;
-  console.log('response');
-  console.log(req.body.response);
+  // console.log('response');
+  // console.log(req.body.response);
   const token = jwt.sign(data, process.env.SECRETKEY)
   // console.log(token);
   req.token = token;
