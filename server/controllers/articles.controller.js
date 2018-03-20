@@ -23,10 +23,27 @@ module.exports = {
         let decoded = jwt.verify(req.headers.apptoken, process.env.JWT);        
         Article
             .find({author: decoded.id})
+            .populate('author')
             .exec()
             .then((response) => {
                 res.status(200).json({
                     articles:response
+                });
+            })
+            .catch((err) => {
+                res.status(500).send(err);
+            })
+    },
+
+    articleReadById: (req, res) => {
+        let decoded = jwt.verify(req.headers.apptoken, process.env.JWT);        
+        Article
+            .findById(req.params.id)
+            .populate('author')
+            .exec()
+            .then((response) => {
+                res.status(200).json({
+                    article:response
                 });
             })
             .catch((err) => {
