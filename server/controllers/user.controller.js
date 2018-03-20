@@ -55,5 +55,23 @@ module.exports = {
                     message: 'User not found'
                 })
         })
+    },
+    getAllUsers: (req, res) => {
+        User.find()
+          .exec()
+          .then(users => {
+            res.status(200)
+            .json({
+              message: 'All user retrieved',
+              users
+            })
+          })
+          .catch(err => {
+            res.status(400)
+            .json({
+              message: 'Failed to retrieve users',
+              err
+            })
+          })
     }
 }

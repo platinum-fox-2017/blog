@@ -5,12 +5,14 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 const mongoose = require('mongoose')
+const cors = require('cors')
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 const articles = require('./routes/articles')
 
 var app = express();
+app.use(cors())
 
 const db = mongoose.connection;
 const dbURL = 'mongodb://localhost:27017/blog';
