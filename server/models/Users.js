@@ -18,3 +18,6 @@ const userSchema = new Schema({
         validate:[emailValidation,'email format is not right']
     }
 })
+
+const User = mongoose.model('User', userSchema)
+module.exports = User

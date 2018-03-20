@@ -10,5 +10,5 @@ const articleSchema = new Schema({
     userId:{type: Schema.Types.ObjectId, ref: 'User'}
 },{timestamps:true})
 
-const Article = mongoose.model('Article',articleSchema)
+const Article = mongoose.model('Article', articleSchema)
 module.exports = Article
