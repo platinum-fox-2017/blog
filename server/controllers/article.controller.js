@@ -12,6 +12,17 @@ module.exports = {
         });
     },
 
+    findById: (req, res) => {
+        Article.findById(req.params.id, (err, article) => {
+            if(err) res.status(500).send({ message: err });
+
+            res.status(200).send({
+                message: 'Get article success',
+                data: article
+            });
+        });
+    },
+
     insert: (req, res) => {
         let article = new Article({
             title: req.body.title,
