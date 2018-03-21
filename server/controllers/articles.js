@@ -5,7 +5,7 @@ class ArticleController{
         Article.find()
         .exec()
         .then(data=>{
-            res.status(200).send({
+            res.status(200).json({
                 message:'this is list of article',
                 data
             })
