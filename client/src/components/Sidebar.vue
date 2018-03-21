@@ -1,21 +1,39 @@
 <template>
 <div class="sidenav col-md-2">
 <h4>Featured Articles</h4>
-<div class="link">
-
+<div class="link" v-for="(article,i) in articles" :key='i'>
+<router-link :to="{ name: 'ArticleMain', params: { id: article._id }}">
+{{article.title}}
+</router-link>
+<hr>
 </div>
-<a href="#">About</a>
-<a href="#">Services</a>
-<a href="#">Clients</a>
-<a href="#">Contact</a>
 </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'Sidebar',
   data () {
     return {
+      articles: []
+    }
+  },
+  created: function () {
+    this.fetchArticlesData()
+  },
+  methods: {
+    fetchArticlesData: function () {
+      axios({
+        method: 'get',
+        url: 'http://localhost:3000/api/articles'
+      }).then(data => {
+        console.log(data)
+        this.articles = data.data.data.map(val => val)
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }
@@ -26,14 +44,14 @@ export default {
     height: 100%;
     padding-top: 20px;
     margin-right: 0;
-    text-align:justify;
+    text-align:left;
 }
 
 /* The navigation menu links */
 .sidenav a {
     padding: 6px 8px 6px 16px;
     text-decoration: none;
-    font-size: 25px;
+    font-size: 17px;
     color: #818181;
     display: block;
 }
@@ -46,6 +64,6 @@ export default {
 /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
+    .sidenav a {font-size: 12px;}
 }
 </style>

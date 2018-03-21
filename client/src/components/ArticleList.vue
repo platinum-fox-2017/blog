@@ -1,4 +1,6 @@
 <template>
+<div class="main-page">
+<header-nav :title="title" :description="description"></header-nav>
 <div class="container">
 <div class="row">
 <div class="col-md-8 mx-auto">
@@ -18,17 +20,25 @@ on {{stringDate(article.createdAt)}}</p>
 </div>
 </div>
 </div>
+</div>
 </template>
 
 <script>
 import moment from 'moment'
 import axios from 'axios'
 
+import HeaderNav from '@/components/HeaderNav'
+
 export default {
   name: 'ArticleList',
+  components: {
+    HeaderNav
+  },
   data () {
     return {
-      articles: []
+      articles: [],
+      title: 'Madiun',
+      description: 'write and share stories that matter'
     }
   },
   created: function () {

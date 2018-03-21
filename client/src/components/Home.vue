@@ -1,7 +1,7 @@
 <template>
 <div>
 <navbar></navbar>
-<header-nav></header-nav>
+<!-- <header-nav></header-nav> -->
 <!-- <sidebar></sidebar> -->
 <router-view></router-view>
 </div>
@@ -15,7 +15,7 @@ export default {
   name: 'Home',
   components: {
     Navbar,
-    HeaderNav,
+    HeaderNav
   },
   data () {
     return {

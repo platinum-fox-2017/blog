@@ -5,8 +5,8 @@
 <div class="row">
 <div class="col-lg-8 col-md-10 mx-auto">
 <div class="site-heading">
-<h1>Madiun</h1>
-<span class="subheading">write and share stories that matter</span>
+<h1>{{title}}</h1>
+<span class="subheading">{{description}}</span>
 </div>
 </div>
 </div>
@@ -17,7 +17,10 @@
 <script>
 export default{
   name: 'HeaderNav',
+  props: ['title', 'description'],
   data () {
+    return {
+    }
   }
 }
 </script>
