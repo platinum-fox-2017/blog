@@ -4,12 +4,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import App from './App'
 import router from './router'
-import Navbar from './components/Navbar.vue'
+import Navbar from './components/Navbar'
+import Sidebar from './components/Sidebar'
 
 Vue.config.productionTip = false
 
 Vue.use(Vuex)
 Vue.component('app-navbar', Navbar)
+Vue.component('app-sidebar', Sidebar)
 
 /* eslint-disable no-new */
 new Vue({
