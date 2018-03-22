@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Home from '@/components/pages/Home'
 import Article from '@/components/pages/Article'
-import Recent from '@/components/pages/Recent'
+import Post from '@/components/pages/Post'
 import ArticleItem from '@/components/article/ArticleItem'
 
 Vue.use(Router)
@@ -22,7 +22,10 @@ export default new Router({
     },
     {
       path: '/article',
-      component: Article,
+      components: {
+        default: Article,
+        modalpost: Post
+      },
       children: [
         {
           path: ':articleId',
@@ -33,9 +36,9 @@ export default new Router({
       ]
     },
     {
-      path: '/recent',
-      name: 'Recent',
-      component: Recent
+      path: '/post',
+      name: 'Post',
+      component: Post
     }
   ]
 })

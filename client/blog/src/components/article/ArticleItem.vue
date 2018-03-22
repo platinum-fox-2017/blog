@@ -1,6 +1,6 @@
 <template id="">
   <div class="tile is-9" id="ArticleItem">
-    <div class="tile is-vertical is-7">
+    <div class="tile is-vertical is-6">
       <div class="tile">
         <div class="tile is-parent">
           <article class="tile is-child notification is-info">
