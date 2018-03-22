@@ -1,13 +1,14 @@
 <template id="">
-  <div id="Footer">
-    <section class="hero is-medium is-black">
-      <div class="hero-body">
-        <div class="container has-text-white has-text-centered">
-          <h1 class="subtitle">Footer</h1>
-        </div>
+  <footer class="footer notification is-black">
+
+    <div class="container" id="Footer" >
+      <div class="content has-text-white has-text-centered ">
+        <h1 class="subtitle">Footer</h1>
       </div>
-    </section>
-  </div>
+    </div>
+
+  </footer>
+
 </template>
 
 <script type="text/javascript">
