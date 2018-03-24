@@ -3,12 +3,11 @@
 
     <div class="container" id="Footer" >
       <div class="content has-text-white has-text-centered ">
-        <h1 class="subtitle">Footer</h1>
+        <h5  class="subtitle">By Fransiskus Teddy</h5>
       </div>
     </div>
 
   </footer>
-
 </template>
 
 <script type="text/javascript">

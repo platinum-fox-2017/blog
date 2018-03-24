@@ -5,6 +5,13 @@
         <div class="p-custom">
           <div class="tile is-ancestor">
             <div class="tile is-vertical is-3">
+              <div class="tile is-parent">
+                <article id="post-button" class="tile is-child  notification is-dark">
+                  <div>
+                    <a v-on:click="activateModal" class="is-primary is-large button">POST</a>
+                  </div>
+                </article>
+              </div>
               <div class="tile is-parent" id="blog-list">
                 <article class="tile is-child notification is-dark full-height">
                   <div class="menu">
@@ -19,13 +26,6 @@
                   </div>
                 </article>
               </div>
-              <div class="tile is-parent">
-                <article id="post-button" class="tile is-child  notification is-dark">
-                  <div>
-                    <a v-on:click="activateModal" class="is-primary is-large button">POST</a>
-                  </div>
-                </article>
-              </div>
             </div>
 
             <router-view></router-view>
@@ -34,7 +34,7 @@
       </div>
     </section>
 
-    <div :class="modalClass">
+    <div :class="postModalClass">
       <div class="modal-background" v-on:click="deactivateModal"></div>
       <div class="modal-card">
         <header class="modal-card-head">
@@ -43,21 +43,20 @@
         </header>
         <section class="modal-card-body">
           <!-- Content ... -->
-          <p>AAAAAAAAAAAAAAAAAAAAAA</p>
-          <!-- <router-view class="view two" name="modalPost"></router-view> -->
           <post></post>
         </section>
         <footer class="modal-card-foot">
-          <button class="button is-success">Save changes</button>
           <button class="button" v-on:click="deactivateModal">Cancel</button>
         </footer>
       </div>
     </div>
+
   </div>
 </template>
 
 <script type="text/javascript">
 import Post from '@/components/pages/Post'
+import { mapState } from 'vuex'
 export default {
   name: 'Article',
   components: {
@@ -68,7 +67,7 @@ export default {
       // articleData: '',
       address: 'http://localhost:3000',
       deploy: '',
-      modalClass: 'modal'
+      postModalClass: 'modal'
     }
   },
   created: function () {
@@ -76,6 +75,9 @@ export default {
     this.$store.dispatch('getArticles')
   },
   computed: {
+    ...mapState([
+      'postRedirect'
+    ]),
     articleData () {
       return this.$store.state.articleDatas
     }
@@ -87,11 +89,19 @@ export default {
       //   this.articleData = serverRes.data.articles
       // })
     },
-    activateModal () {
-      this.modalClass = 'modal is-active'
+    activateModal (action) {
+      this.postModalClass = 'modal is-active'
     },
     deactivateModal () {
-      this.modalClass = 'modal'
+      this.postModalClass = 'modal'
+    }
+  },
+  watch: {
+    postRedirect (newVal, oldVal) {
+      if (newVal === true) {
+        this.deactivateModal()
+        this.$store.dispatch('postRedirectAct', {status: false})
+      }
     }
   }
 }

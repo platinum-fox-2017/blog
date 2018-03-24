@@ -1,7 +1,7 @@
 <template id="">
   <section class="hero is-bold is-light" id="Post">
     <div class="hero-body">
-      <div class=" ">
+      <div class="w-100">
 
         <!-- send form data through vue -->
         <div class="field">
@@ -63,8 +63,9 @@
 </template>
 
 <script type="text/javascript">
+import { mapState } from 'vuex'
 export default {
-  name: 'Post',
+  name: 'Edit',
   data () {
     return {
       title: '',
@@ -72,16 +73,22 @@ export default {
       file: ''
     }
   },
+  computed: {
+    ...mapState([
+      'postRedirect'
+    ])
+  },
   methods: {
     confirmData () {
       let form = new FormData()
-      form.append('title', this.title)
-      form.append('text', this.description)
-      form.append('field', this.file)
-      this.baseAxios.post(`article/post/${localStorage.getItem('userID')}`, form, {headers: {token: localStorage.getItem('jwtToken')}}).then(serverRes => {
+      if (this.title !== '') { form.append('title', this.title) }
+      if (this.description !== '') { form.append('text', this.description) }
+      if (this.file !== '') { form.append('field', this.file) }
+      this.baseAxios.put(`article/edit/${this.$route.params.articleId}`, form, {headers: {token: localStorage.getItem('jwtToken')}}).then(serverRes => {
         console.log(serverRes.data.message)
-        let article = serverRes.data.newArticle
+        let article = serverRes.data.updatedArticle
         console.log(article)
+        this.$store.dispatch('getArticles')
         this.$router.push({ path: `/article/${article._id}` })
         this.$store.dispatch('postRedirectAct', {status: true})
       }).catch(err => { console.log(err) })
@@ -93,10 +100,18 @@ export default {
       }
       this.file = files[0]
     }
+  },
+  postRedirect (newVal, oldVal) {
+    if (newVal === true) {
+      this.deactivateModal()
+      this.$store.dispatch('postRedirectAct', {status: false})
+    }
   }
 }
 </script>
 
 <style media="screen">
-
+.w-100 {
+  width: 100%;
+}
 </style>

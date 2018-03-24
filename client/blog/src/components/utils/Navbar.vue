@@ -19,9 +19,6 @@
           <router-link to="/article" class="navbar-item">
             Article
           </router-link>
-          <router-link to="/post" class="navbar-item">
-            Post
-          </router-link>
         </div>
       </div>
     </nav>

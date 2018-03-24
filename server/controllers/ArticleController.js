@@ -10,7 +10,6 @@ module.exports = {
       email: req.decoded.email
     })
     .exec().then(foundUser => {
-      console.log('ooooooooooooooooooooooooooooooooooooooooo');
       console.log(foundUser);
       if (foundUser == null) {
         return res.status(404).json({
@@ -19,9 +18,8 @@ module.exports = {
       }
       console.log(foundUser._id);
       Article.find({userId: foundUser._id})
-        .limit(10)
+        .limit(30)
         .exec().then(foundArticles => {
-          console.log('derpderpdeprderpderpderp');
           console.log(foundArticles);
           if (foundArticles.length < 1) {
             return res.status(404).json({
@@ -54,6 +52,7 @@ module.exports = {
     console.log('======================================================================================================================');
     console.log(req.params);
     Article.findOne({_id: req.params.articleId})
+    .populate('userId')
     .exec().then(foundArticle => {
       console.log(foundArticle);
       if (!foundArticle) {
@@ -88,11 +87,17 @@ module.exports = {
         })
       }
       console.log(req.body);
+      let imageUrl;
+      if (req.file) {
+        imageUrl = req.file.cloudStoragePublicUrl
+      } else {
+        imageUrl = 'undefined'
+      }
       let newArticle = new Article({
         title: req.body.title,
         text: req.body.text,
-        userId: req.params.userId
-        // imgUrl: req.file.originalname,
+        userId: req.params.userId,
+        imgUrl: imageUrl
       })
       foundUser.articleId.push(newArticle._id)
       foundUser.save( () => {
@@ -122,6 +127,7 @@ module.exports = {
     let updateData = {}
     if (req.body.title) {updateData.title = req.body.title}
     if (req.body.text) {updateData.text = req.body.text}
+    if (req.file) {updateData.imgUrl = req.file.cloudStoragePublicUrl}
 
     User.findOne({
         name: req.decoded.name,

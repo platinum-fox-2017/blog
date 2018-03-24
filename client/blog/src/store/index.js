@@ -10,7 +10,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     title: 'blogApp',
-    articleDatas: ''
+    articleDatas: '',
+    postRedirect: false
   },
   mutations: {
     titleMut (state, data) {
@@ -18,6 +19,13 @@ const store = new Vuex.Store({
     },
     articleMut (state, data) {
       state.articleDatas = data
+    },
+    postRedirectMut (state, payload) {
+      if (payload.status === true) {
+        state.postRedirect = true
+      } else {
+        state.postRedirect = false
+      }
     }
   },
   actions: {
@@ -25,6 +33,9 @@ const store = new Vuex.Store({
       baseAxios.get(`article/user/${localStorage.getItem('userID')}`, {headers: {token: localStorage.getItem('jwtToken')}}).then(serverRes => {
         commit('articleMut', serverRes.data.articles)
       })
+    },
+    postRedirectAct ({commit}, payload) {
+      commit('postRedirectMut', payload)
     }
   }
 })
