@@ -5,18 +5,24 @@ module.exports = {
     Category
       .find()
       .then(category => {
-        res.json(category)
+        console.log('home / category : ', category)
+        res.status(200).json({
+          message: 'query success',
+          category
+        })
       })
       .catch(err => {
         next(err)
       })
   },
   create: function (req, res, next) {
+    console.log('req.body : ', req.body)
     Category
       .create({
-        name: String(req.body.name),
+        name: req.body.name
       })
       .then(data => {
+        console.log('create / data : ', data)
         res.status(201).send({
           message: '1 product created',
           data

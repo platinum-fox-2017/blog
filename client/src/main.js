@@ -6,6 +6,7 @@ import App from './App'
 import router from './router'
 import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
+import { store } from './store/store'
 
 Vue.config.productionTip = false
 
@@ -17,6 +18,7 @@ Vue.component('app-sidebar', Sidebar)
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

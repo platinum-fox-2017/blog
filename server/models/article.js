@@ -4,7 +4,9 @@ const Schema = mongoose.Schema;
 let articleSchema = new Schema (
   {
     title: String,
-    description: String
+    description: String,
+    category: String,
+    imageURL: String
   },
   {
     timestamps: true

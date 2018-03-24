@@ -11,16 +11,10 @@ const api = require('./routes/api');
 const users = require('./routes/users');
 
 const app = express();
+app.use(cors());
 
-// mongoose.connection.openUri('mongodb://localhost/blog');
-// mongoose.Promise = global.Promise;
-// mongoose.connection.once('open', () => {
-//   console.log('mongoose connection success');
-// }).on('error', (error) => {
-//   console.log('connection error', error);
-// })
 const db = mongoose.connection;
-const dbURL = 'mongodb://localhost:27017/blog';
+const dbURL = 'mongodb://localhost:27018/blog';
 mongoose.connect(dbURL, err => {
   if(!err) {
     console.log('Connected to Mongooose');
@@ -28,7 +22,6 @@ mongoose.connect(dbURL, err => {
     console.log('Error connect to Mongoose');
   }
 })
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
