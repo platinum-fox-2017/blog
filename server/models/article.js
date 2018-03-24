@@ -4,6 +4,10 @@ const Schema = mongoose.Schema
 var ArticleSchema = new Schema({
     title : String,
     text : String,
+    likes: [{
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }],
     imgUrl: {
       type: String,
       default: 'undefined'

@@ -3,10 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "prestart": "node getEnv",
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www"
+    "dev": "nodemon ./bin/www",
+    "getcred": "node getGcsCred"
   },
   "dependencies": {
+    "@google-cloud/storage": "^1.6.0",
     "axios": "^0.18.0",
     "body-parser": "~1.18.2",
     "chai": "^4.1.2",
