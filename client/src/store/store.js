@@ -38,13 +38,11 @@ export const store = new Vuex.Store({
       state.categories[index] = payload
     },
     deleteCategory (state, payload) {
-      console.log('mutations/ delCategory / state.categories._id : ', state.categories)
-      console.log('mutations/ delCategory/ payload : ', payload)
+      console.log('mutations/ deleteCategory / state.categories._id : ', state.categories)
+      console.log('mutations/ deleteCategory/ payload : ', payload)
       let index = state.categories.findIndex(category => category._id === payload)
-      console.log('mutations / delCategory/ index : ', index)
-      console.log('mutations / delCategory/ state.categories/ before : ', state.categories)
+      console.log('mutations / deleteCategory/ index : ', index)
       state.categories.slice(index, 1)
-      console.log('mutations / delCategory/ state.categories/ after : ', state.categories)
     },
     // mutArticle
     createArticle (state, payload) {
@@ -60,17 +58,13 @@ export const store = new Vuex.Store({
       let index = state.articles.findIndex(article => article._id === payload._id)
       console.log('mutations/ index : ', index)
       console.log('mutations/ updateArticle/ payload : ', payload)
-      console.log('mutations/ updateArticle/ payload : ', payload.name)
       state.articles[index] = payload
     },
-    deleteArticle (state, payload) {
-      console.log('mutations/ deleteArticle / state.articles._id : ', state.articles)
-      console.log('mutations/ deleteArticle/ payload : ', payload)
-      let index = state.articles.findIndex(article => article._id === payload)
+    deleteArticle (state, articleId) {
+      console.log('mutations/ deleteArticle/ articleId : ', articleId)
+      let index = state.articles.findIndex(article => article._id === articleId)
       console.log('mutations / deleteArticle/ index : ', index)
-      console.log('mutations / deleteArticle/ state.articles/ before : ', state.articles)
       state.articles.slice(index, 1)
-      console.log('mutations / deleteArticle/ state.articles/ after : ', state.articles)
     }
   },
   actions: {
@@ -156,26 +150,25 @@ export const store = new Vuex.Store({
         })
     },
     updateArticle ({commit}, payload) {
-      let id = payload._id
-      console.log('actions/ update/ id : ', id)
+      let id = payload.id
+      console.log('actions/ updateArticle/ payload : ', payload)
+      console.log('actions/ updateArticle/ id : ', id)
       axios.put(`http://localhost:3000/api/article/${id}`, payload)
         .then(({data}) => {
           console.log('actions/ update/ data : ', data)
-          console.log('actions/ update/ data : ', data.article)
-          commit('updateArticle', data)
+          console.log('actions/ update/ payload : ', payload)
+          commit('updateArticle', payload)
         })
         .catch(err => {
           console.log(err)
         })
     },
-    deleteArticle ({commit}, payload) {
-      let id = payload._id
-      console.log('actions/ payload : ', payload)
-      console.log('actions/ payload._id : ', payload._id)
-      axios.delete(`http://localhost:3000/api/article/${id}`)
+    deleteArticle ({commit}, articleId) {
+      console.log('actions/ articleId : ', articleId)
+      axios.delete(`http://localhost:3000/api/article/${articleId}`)
         .then(({data}) => {
-          console.log('actions/ delete/ payload : ', payload)
-          commit('deleteArticle', id)
+          console.log('Actions/ deleteArticle/ articleId : ', articleId)
+          commit('deleteArticle', articleId)
         })
         .catch(err => {
           console.log(err)

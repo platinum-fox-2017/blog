@@ -1,12 +1,14 @@
 <template>
   <div id="app">
     <app-navbar></app-navbar>
-    <div class="row">
-      <div class="col-xs-6 col-md-3">
-        <app-sidebar></app-sidebar>
-      </div>
-      <div class="col-xs-6 col-md-9">
-        <router-view/>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-3">
+          <app-sidebar></app-sidebar>
+        </div>
+        <div class="col-xs-12 col-sm-9">
+          <router-view/>
+        </div>
       </div>
     </div>
   </div>

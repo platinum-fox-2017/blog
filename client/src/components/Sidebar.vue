@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-xs-6 col-md-4">
+      <div class="col-xs-12 col-sm-4">
         <div class="panel panel-default">
           <div class="panel-heading librePanelHeading">
             <div class="panel-title">
@@ -107,7 +107,6 @@
             <li class="list-group-item librePanelListGroupItem">
               <a data-toggle="collapse" :href="'#menuPanelSubListGroup'+idx">
                 <span>{{ category.name }}</span>
-                <b class="pull-right glyphicon glyphicon-chevron-right"></b>
               </a>
 
               <button class="btn btn-warning btn-sm" data-toggle="modal" :data-target="'#updateCategoryModal'+category._id" style="float: right; margin-right: 20px; margin-top: -5px;">
@@ -165,7 +164,7 @@
                       <h4>Are you sure want to delete this category ?</h4>
                     </div>
                     <div class="modal-footer">
-                      <a class="btn btn-danger" style="float: right">
+                      <a class="btn btn-danger" style="float: right;">
                         <span class="fa fa-trash" data-dismiss="modal" @click.prevent="deleteCategory(category)"> delete This Category</span>
                       </a>
                       <button type="button" class="btn btn-default" style="float: left" data-dismiss="modal">Close</button>
@@ -177,9 +176,9 @@
               <!-- End of Modal for delete category -->
 
               <ul :id="'menuPanelSubListGroup'+idx" class="collapse librePanelSubListGroupItem">
-                <li class="list-group-item librePanelListGroupItem" v-for="(article,index) in articles" :key="index">
+                <li class="list-group-item librePanelListGroupItem" v-for="(article,index) in articles" :key="index" v-show="article.category === category.name">
                   <router-link :to="'/article/'+article._id">
-                    <span v-show="article.category === category.name">
+                    <span>
                       {{ article.title }}
                     </span>
                   </router-link>
@@ -223,11 +222,11 @@ export default {
   methods: {
     // methCategory
     createCategory (category) {
-      console.log('methods / createCategory/ category : ', category)
+      console.log('methods/ createCategory/ category : ', category)
       this.$store.dispatch('createCategory', category)
     },
     updateCategory (category) {
-      console.log('methods / updateCategory : ', category.name)
+      console.log('methods/ updateCategory : ', category.name)
       this.$store.dispatch('updateCategory', category)
     },
     deleteCategory (category) {
@@ -237,17 +236,8 @@ export default {
     },
     // methArticle
     createArticle (article) {
-      console.log('methods / createArticle/ article : ', article)
+      console.log('methods/ createArticle/ article : ', article)
       this.$store.dispatch('createArticle', article)
-    },
-    updateArticle (article) {
-      console.log('methods / updateArticle : ', article.name)
-      this.$store.dispatch('updateArticle', article)
-    },
-    deleteArticle (article) {
-      console.log('sidebar / deleteArticle()/ article : ', article)
-      console.log('sidebar / deleteArticle()/ article._id : ', article._id)
-      this.$store.dispatch('deleteArticle', article)
     }
   }
 }
