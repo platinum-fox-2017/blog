@@ -31,7 +31,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" @click="addartikel">Save</button>
+                <button type="button" class="btn btn-primary" @click="addartikel" data-dismiss="modal">Save</button>
               </div>
             </div>
           </div>
@@ -52,7 +52,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" @click="updateartikel">Save changes</button>
+                <button type="button" class="btn btn-primary" @click="updateartikel" data-dismiss="modal">Save changes</button>
               </div>
             </div>
           </div>
@@ -107,19 +107,21 @@
       }
     },
     created:function () {
-      axios.get('http://localhost:3000/artikel/').then(response => {
-        this.artikel=response.data.articles
-        console.log(response);
-      }).catch(err => console.error(err));
+      this.showartikel();
     },
     methods:{
+      showartikel () {
+        axios.get('http://localhost:3000/artikel/').then(response => {
+          this.artikel=response.data.articles
+        }).catch(err => console.error(err));
+      },
       addartikel () {
         axios.post('http://localhost:3000/artikel', {
           title:this.title,
           content:this.content
         })
         .then(response => {
-          console.log(response)
+          this.showartikel()
         })
         .catch(err => { console.log(err)})
       },
@@ -127,7 +129,7 @@
         console.log(id);
         axios.delete(`http://localhost:3000/artikel/${id}`)
         .then(response => {
-          console.log(response)
+          this.showartikel()
         })
         .catch(err => {
           console.log(err)
@@ -144,7 +146,7 @@
           content:this.updatecontent
         })
         .then(response => {
-          console.log(response)
+          this.showartikel()
         })
         .catch(err => {
           console.log(err)
