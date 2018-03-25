@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
+    users: [],
     categories: [],
     articles: []
   },
@@ -15,11 +16,24 @@ export const store = new Vuex.Store({
       return state.categories
     },
     getArticles (state) {
-      console.log('getArticles / payload : ', state)
+      console.log('getArticles / state : ', state)
       return state.articles
+    },
+    getUsers (state) {
+      console.log('getters/ getUsers / payload : ', state)
+      return state.users
     }
   },
   mutations: {
+    // Users
+    signUp (state, payload) {
+      console.log('mutations/ payload : ', payload)
+      state.users.push(payload)
+    },
+    getUsers (state, payload) {
+      console.log('mutations/ payload : ', payload)
+      state.users = payload
+    },
     // mutCategory
     createCategory (state, payload) {
       console.log('mutations/ createCategory/ payload : ', payload)
@@ -47,7 +61,7 @@ export const store = new Vuex.Store({
     // mutArticle
     createArticle (state, payload) {
       console.log('mutations/ createArticle/ payload : ', payload)
-      state.articles.push(payload)
+      state.articles.unshift(payload)
     },
     readArticles (state, payload) {
       console.log('mutations/ readArticles/ payload : ', payload)
@@ -68,6 +82,28 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
+    // actUser
+    signUp ({commit}, payload) {
+      axios.post('http://localhost:3000/api/user', payload)
+        .then(({data}) => {
+          console.log('Actions/ signUp/ data : ', data)
+          commit('signUp', payload)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    getUsers ({commit}, payload) {
+      axios.get('http://localhost:3000/api/user', payload)
+        .then(({data}) => {
+          console.log('Actions/ signup/ payload : ', payload)
+          commit('getUsers', payload)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+
     // actCategory
     createCategory ({commit}, payload) {
       let newCategory = {
@@ -133,6 +169,7 @@ export const store = new Vuex.Store({
         .then(({data}) => {
           // console.log('actions/ createArticle/ data : ', data)
           console.log('actions/ createArticle/ newArticle : ', newArticle)
+          console.log('actions/ createArticle/ payload : ', payload)
           commit('createArticle', newArticle)
         })
         .catch(err => {

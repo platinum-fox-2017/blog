@@ -7,19 +7,19 @@
             <div class="panel-title">
               <span>My Blog</span>
               <div class="btn-group" id="action" style="float: right; margin-top: -3px">
-              <button type="button" class="btn btn-success dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Action
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu">
-                <li>
-                <a href="#" data-toggle="modal" data-target="#categoryModal">Create Category</a>
-                </li>
-                <li>
-                <a href="#" data-toggle="modal" data-target="#articleModal">Create Article</a>
-                </li>
-              </ul>
+                <button type="button" class="btn btn-success dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Action
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li>
+                  <a href="#" data-toggle="modal" data-target="#categoryModal">Create Category</a>
+                  </li>
+                  <li>
+                  <a href="#" data-toggle="modal" data-target="#articleModal">Create Article</a>
+                  </li>
+                </ul>
               </div>
-            </div>
+             </div>
 
             <!-- Category Modal -->
             <div class="modal fade" id="categoryModal" role="dialog">
@@ -33,15 +33,13 @@
                   <div class="modal-body">
                     <form class="form-horizontal" action="/action_page.php">
                       <div class="form-group">
-                        <label class="control-label col-sm-2">Name :</label>
-                        <div class="col-sm-10">
+                        <div class="col-xs-3">
+                          <label class="control-label">Name :</label>
+                        </div>
+                        <div class="col-xs-9">
                           <input type="text" class="form-control" placeholder="Enter Category Name" v-model="category">
                         </div>
                       </div>
-                      <!-- <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                        </div>
-                      </div> -->
                     </form>
                   </div>
                   <div class="modal-footer">
@@ -64,28 +62,36 @@
                   <div class="modal-body">
                     <form class="form-horizontal" action="/action_page.php">
                       <div class="form-group">
-                        <label class="control-label col-sm-2">Title :</label>
-                        <div class="col-sm-10">
+                        <div class="col-xs-3">
+                          <label class="control-label">Title :</label>
+                        </div>
+                        <div class="col-xs-9">
                           <input type="text" class="form-control" placeholder="Enter Article Title" v-model="article.title">
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="control-label col-sm-2">Description :</label>
-                        <div class="col-sm-10">
+                        <div class="col-xs-3">
+                          <label class="control-label">Description :</label>
+                        </div>
+                        <div class="col-xs-9">
                           <textarea type="text" class="form-control" placeholder="Enter Article Description" v-model="article.description"></textarea>
                         </div>
                       </div>
                       <div class="form-group">
-                        <div class="col-xs-8">
-                        <label for="" class="control-label col-xs-2">Category</label>
+                        <div class="col-xs-3">
+                          <label for="" class="control-label col-xs-2">Category</label>
+                        </div>
+                        <div class="col-xs-9">
                           <select class="form-control" id="sel1" v-model="article.category">
                             <option v-for="category in categories" :key="category._id">{{ category.name }}</option>
                           </select>
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="control-label col-sm-2">Image URL :</label>
-                        <div class="col-sm-10">
+                        <div class="col-xs-3">
+                          <label class="control-label">Image URL :</label>
+                        </div>
+                        <div class="col-xs-9">
                           <input type="text" class="form-control" placeholder="Enter image URL"  v-model="article.imageURL">
                         </div>
                       </div>
@@ -109,8 +115,8 @@
                 <span>{{ category.name }}</span>
               </a>
 
-              <button class="btn btn-warning btn-sm" data-toggle="modal" :data-target="'#updateCategoryModal'+category._id" style="float: right; margin-right: 20px; margin-top: -5px;">
-              <i class="fa fa-pencil"></i>
+              <button class="btn btn-warning btn-sm pull-right" data-toggle="modal" :data-target="'#updateCategoryModal'+category._id" style="margin-top: -5px;">
+                <i class="fa fa-pencil"></i>
               </button>
 
               <!-- Modal for Update category -->
@@ -126,9 +132,9 @@
                     <div class="modal-body">
                       <form class="form-horizontal">
                         <div class="form-group">
-                          <label for="disabledInput" class="col-sm-3 control-label">Name : </label>
+                          <label class="col-sm-3 control-label">Name : </label>
                           <div class="col-sm-9">
-                            <input class="form-control" id="disabledInput" type="text" v-model="category.name">
+                            <input class="form-control" type="text" v-model="category.name">
                           </div>
                         </div>
                       </form>
@@ -146,7 +152,7 @@
               </div>
               <!-- End of Modal for Update category -->
 
-              <button class="btn btn-danger btn-sm" data-toggle="modal" :data-target="'#deleteCategoryModal'+category._id" style="float: right; margin-right: 20px; margin-top: -5px;">
+              <button class="btn btn-danger btn-sm pull-right" data-toggle="modal" :data-target="'#deleteCategoryModal'+category._id" style="margin-top: -5px;">
                 <i class="fa fa-trash"></i>
               </button>
 
@@ -218,7 +224,9 @@ export default {
     this.$store.dispatch('readCategories')
     this.$store.dispatch('readArticles')
   },
-
+  created: function () {
+    this.$store.getters.getArticles
+  },
   methods: {
     // methCategory
     createCategory (category) {

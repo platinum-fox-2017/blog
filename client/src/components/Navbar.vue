@@ -8,7 +8,7 @@
               <a class="navbar-brand">B L O G</a>
             </router-link>
           </div>
-          <div class="navbar-right" style="margin-top: 8px">
+          <div class="navbar-right" style="margin-top: 8px" v-if="token">
             <div class="btn-group" id="action">
               <button id="fb-btn" class="btn btn-warning" @click="logoutFunc()">Logout</button>
             </div>
@@ -22,7 +22,11 @@
 
 <script>
 export default {
-
+  data () {
+    return {
+      token: ''
+    }
+  }
 }
 </script>
 
