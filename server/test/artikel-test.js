@@ -57,7 +57,7 @@ describe('Api Artikel',() => {
       })
     })
   }),
-  
+
   describe('DELETE /artikel',() => {
     it('untuk delete artikel berdasarkan id', (done) => {
       chai.request(server)

@@ -1,6 +1,17 @@
 const Artikel = require('../models/Artikel')
+const FB   = require('fb')
 
 module.exports = {
+  signin:(req,res) => {
+    FB.setAccessToken(req.headers.token);
+    FB.api('me', {fields: ['id' , 'name', 'email', 'gender', 'picture'], access_token: req.headers.token}, function(userData) {
+      res.status(200)
+          .json({
+              name: userData.name,
+              foto: userData.picture.data.url
+          })
+    })
+  },
   create: (req, res) => {
          Artikel.create({
              title: req.body.title,
@@ -21,12 +32,11 @@ module.exports = {
          })
      },
      findAll: (req, res) => {
-         Artikel.find()
-             .exec()
+         Artikel.find().sort( { _id: -1 } )
              .then(articles => {
                  res.status(200)
                      .json({
-                         message: 'data ditampilkan',
+                         message: 'data ditampilkan di home',
                          articles
                      })
              })
