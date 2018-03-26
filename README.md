@@ -15,7 +15,7 @@ Client :
 - vuex
 
 ### Preview
-![preview](https://raw.githubusercontent.com/eksant/todo-fancy-api/master/client/src/assets/img/screenshot.png  "Preview")
+![preview](https://raw.githubusercontent.com/eksant/blog/master/client/src/assets/images/screenshot-blog.png  "Preview")
 
 ### Live-Demo
 [http://blog.seorangeksa.com](http://blog.seorangeksa.com)
