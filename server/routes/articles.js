@@ -5,7 +5,8 @@ const articleController = require('../controllers/articles')
 const articleModel      = require('../models/articles')
 
 var auth = (req, res, next) => {
-  let decoded = jwt.verify(req.headers.token, 'hahaha3x')
+  // console.log('token : ',req.headers.token)
+  let decoded = jwt.verify(req.headers.token, process.env.TOKEN_KEY)
   if (decoded) {
     req.decoded = decoded
     next()

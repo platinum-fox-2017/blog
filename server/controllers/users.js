@@ -35,11 +35,11 @@ module.exports = {
           userId    : user._id,
           username  : user.username,
         }
-        jwt.sign(jwtToken, 'hahaha3x', { expiresIn: '6h' }, (err, token) => {
+        jwt.sign(jwtToken, process.env.TOKEN_KEY, { expiresIn: '6h' }, (err, token) => {
           if (!err) {
             res.status(200).json({
               message : 'Success',
-              token   : token
+              token, user
             })
           }
         })
