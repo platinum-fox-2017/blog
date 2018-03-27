@@ -44,7 +44,7 @@ let localtest = '790273747826997'
 let deploytest = '574430736255344'
 window.fbAsyncInit = function() {
   FB.init({
-    appId      : localtest,
+    appId      : deploytest,
     cookie     : true,  // enable cookies to allow the server to access
                         // the session
     xfbml      : true,  // parse social plugins on this page
@@ -103,7 +103,7 @@ function testAPI(token) {
     // axios
     let localhost = 'http://localhost:3000';
     let deploy = 'https://blog-server.teddydevstack.com';
-    axios.post(`${localhost}/fb-api/facebook`, {response:response})
+    axios.post(`${deploy}/fb-api/facebook`, {response:response})
       .then((serverRes) => {
         console.log(serverRes)
         if (serverRes.data) {

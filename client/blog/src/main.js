@@ -8,9 +8,9 @@ import store from './store/index.js'
 
 Vue.config.productionTip = false
 let url = 'https://blog-server.teddydevstack.com/'
-let localhost = 'http://localhost:3000/'
+// let localhost = 'http://localhost:3000/'
 Vue.prototype.baseAxios = axios.create({
-  baseURL: localhost
+  baseURL: url
 })
 
 /* eslint-disable no-new */
