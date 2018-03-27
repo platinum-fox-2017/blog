@@ -2,7 +2,7 @@ const Article = require('../models/article.js');
 const User = require('../models/user.js');
 
 module.exports = {
-
+  console.log(req.body)
   tokenToClient: (req, res) => {
     User.findOne({email: req.body.response.email})
       .exec()

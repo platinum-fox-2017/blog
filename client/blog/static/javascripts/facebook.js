@@ -101,8 +101,8 @@ function testAPI(token) {
 
     // axios
     let localhost = 'http://localhost:3000';
-    let deploy = 'http://phase-two.teddydevstack.com';
-    axios.post(`${localhost}/fb-api/facebook`, {response:response})
+    let deploy = 'https://blog-server.teddydevstack.com';
+    axios.post(`${deploy}/fb-api/facebook`, {response:response})
       .then((serverRes) => {
         console.log(serverRes)
         if (serverRes.data) {
