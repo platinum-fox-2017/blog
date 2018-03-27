@@ -7,8 +7,10 @@ import axios from 'axios'
 import store from './store/index.js'
 
 Vue.config.productionTip = false
+let url = 'https://blog.teddydevstack.com/'
+let localhost = 'http://localhost:3000/'
 Vue.prototype.baseAxios = axios.create({
-  baseURL: 'http://localhost:3000/'
+  baseURL: url
 })
 
 /* eslint-disable no-new */
