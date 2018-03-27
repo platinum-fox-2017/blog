@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+
 const baseAxios = axios.create({
-  baseURL: 'http://localhost:3000/'
+  baseURL: 'https://blog-server.teddydevstack.com/'
 })
 
 Vue.use(Vuex)

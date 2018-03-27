@@ -66,7 +66,7 @@ export default {
     return {
       // articleData: '',
       address: 'http://localhost:3000',
-      deploy: '',
+      deploy: 'https://blog-server.teddydevstack.com',
       postModalClass: 'modal'
     }
   },

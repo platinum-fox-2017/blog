@@ -15,7 +15,7 @@ var fb_api = require('./routes/fb-api');
 const mongoose = require('mongoose');
 let url = 'mongodb://werkbau:YratyortSevaC5691@devstack-0-shard-00-00-hjaoe.mongodb.net:27017,devstack-0-shard-00-01-hjaoe.mongodb.net:27017,devstack-0-shard-00-02-hjaoe.mongodb.net:27017/blog?ssl=true&replicaSet=devstack-0-shard-0&authSource=admin';
 let localhost = 'mongodb://localhost/test_blog';
-mongoose.connect(url);
+mongoose.connect(localhost);
 
 var app = express();
 
