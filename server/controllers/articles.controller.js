@@ -36,7 +36,7 @@ module.exports = {
     },
 
     articleReadById: (req, res) => {
-        let decoded = jwt.verify(req.headers.apptoken, process.env.JWT);        
+        // let decoded = jwt.verify(req.headers.apptoken, process.env.JWT);        
         Article
             .findById(req.params.id)
             .populate('author')

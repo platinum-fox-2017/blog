@@ -1,8 +1,11 @@
 <template>
   <router-link :to="{ name: 'FullArticle', params: { id: article._id }}" class="box">
-    <div class="article">
+    <div class="article" v-if="article">
       <h3>{{article.title}}</h3>
-      <p>{{article.description}}</p>
+      <p>{{articlePreview}}</p>
+    </div>
+    <div v-else>
+      <p>loading</p>
     </div>
   </router-link>
 </template>
@@ -10,6 +13,15 @@
 <script>
 export default {
   props: ['article'],
+  computed: {
+    articlePreview: function () {
+      if (this.article.description.length > 500) {
+        return this.article.description.slice(0, 487) + '...'
+      } else {
+        return this.article.description
+      }
+    }
+  },
   watch: {
   }
 }

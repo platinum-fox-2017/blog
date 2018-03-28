@@ -14,7 +14,13 @@ module.exports = {
                     if(flag) {
                         res.status(200).json({
                             message: `Welcome ${user.first_name}`,
-                            apptoken: jwt.sign({id: user._id}, process.env.JWT)
+                            apptoken: jwt.sign({id: user._id}, process.env.JWT),
+                            user: {
+                                first_name: user.first_name,
+                                last_name: user.last_name,
+                                email: user.email,
+                                role: user.role
+                            }
                         })
                     } else {
                         reject()

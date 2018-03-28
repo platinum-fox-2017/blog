@@ -13,18 +13,60 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contacts</a>
                 </li>
+                <li class="nav-item" @click="newArticle()" v-if="role === 'author'">
+                    <a class="nav-link" href="#">New Post</a>
+                </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" v-if="user">
+                    <a class="nav-link" href="#">Hi, {{user.first_name}}</a>
+                </li>
+                <li class="nav-item" v-if="user" @click="logout">
+                    <a class="nav-link" href="#">Logout</a>
+                </li>
+                <li class="nav-item" data-toggle="modal" data-target="#loginModal" v-else>
+                    <a class="nav-link" href="#">Login</a>
+                </li>
+            </ul>
+            <!-- <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+            </form> -->
         </div>
     </nav>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-
+  data () {
+    return {
+      role: null
+    }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'getUser'
+    })
+  },
+  methods: {
+    logout () {
+      localStorage.removeItem('apptoken')
+      this.$store.commit('setUser', null)
+    },
+    newArticle () {
+      this.$router.push({name: 'NewArticle'})
+    }
+  },
+  watch: {
+    user () {
+      if (this.user) {
+        this.role = this.user.role
+      } else {
+        this.role = null
+      }
+    }
+  }
 }
 </script>
 

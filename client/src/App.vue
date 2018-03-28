@@ -1,44 +1,54 @@
 <template>
   <div id="app">
-    <div class="container">
+    <div class="container rounded">
       <nav-bar></nav-bar>
-      <router-view class="main" :articles="articles"></router-view>
+      <div class="row main">
+        <div class="col-md-9 content">
+          <router-view></router-view>
+        </div>
+        <div class="col-md-3 tracker border-left">
+          <div v-for="(article, i) in articles" :key='i'>
+            <router-link :to="{ name: 'FullArticle', params: { id: article._id }}" class="list">
+              {{article.title}}
+            </router-link>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- <img src="./assets/logo.png"> -->
+    <login-modal></login-modal>
+    <register-modal></register-modal>
+    <message-modal></message-modal>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import NavBar from '@/components/NavBar'
-import axios from 'axios'
+import LoginModal from '@/components/LoginModal'
+import RegisterModal from '@/components/RegisterModal'
+import MessageModal from '@/components/MessageModal'
 
 export default {
   name: 'App',
-  data () {
-    return {
-      user: {
-        first_name: '',
-        last_name: '',
-        email: ''
-      },
-      articles: []
-    }
+  computed: {
+    ...mapGetters({
+      articles: 'getArticles',
+      message: 'getMessage'
+    })
   },
   components: {
-    NavBar
+    NavBar,
+    LoginModal,
+    RegisterModal,
+    MessageModal
   },
-
   created () {
-    // let apptoken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhYjBjMDA4NzNkZGYwM2Y3NmQxNjhmZiIsImlhdCI6MTUyMTUzMjk4Nn0.Uz1xOIverKzeGizmt8b8EGBsDgSPF-PmuKG5MR1HIbg'
-    let apptoken = localStorage.getItem('apptoken')
-    axios.get('http://localhost:3000/articles/', {headers: {apptoken: apptoken}}).then(({data}) => {
-      this.articles = data.articles
-    })
-    axios.get('http://localhost:3000/users/', {headers: {apptoken: apptoken}}).then(({data}) => {
-      this.user.first_name = data.user.first_name
-      this.user.last_name = data.user.last_name
-      this.user.email = data.user.email
-    })
+    this.$store.dispatch('generateArticles')
+  },
+  watch: {
+    message () {
+      // this.$jq('#messageModal').modal()
+    }
   }
 }
 </script>
@@ -50,12 +60,28 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: #2c3e50;
 }
 .main {
   margin: 0;
-  box-shadow: 0px 0px 185px -43px rgba(0,0,0,0.4)
+  background-color: whitesmoke;
+  box-shadow: 0px 0px 185px -43px rgba(0,0,0,1);
 }
 .container {
   padding: 0;
+}
+.content {
+  min-height: 100vh;
+}
+.tracker {
+  min-height: 100vh;
+}
+.list {
+  color: #454343
+}
+.list:hover {
+  text-decoration: none;
+  color: #161515;
+  text-shadow: 0px -2px 16px rgba(0, 0, 0, 0.38);
 }
 </style>
