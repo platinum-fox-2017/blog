@@ -2,7 +2,7 @@
     <div id="navbar">
         <img src="@/assets/hr-col-a.png">
         <nav v-for="(article, i) in articles" :key="i">
-          <a :href="article._id">{{ article.title }}</a>
+          <a @click="toDescription(article._id)">{{ article.title }}</a>
 <!-- <router-link :to="{ name: 'Description', params: { id: article._id } }"></router-link> -->
         </nav>
     </div>
@@ -10,8 +10,17 @@
 
 <script>
 export default {
-  props: ['articles'],
   name: 'navbar',
+  methods: {
+    toDescription(id) {
+      this.$router.push(`/${id}`);
+    },
+  },
+  computed: {
+    articles() {
+      return this.$store.state.article;
+    },
+  },
 };
 </script>
 
@@ -23,5 +32,10 @@ export default {
 
     #navbar>nav {
         text-align: center;
+        margin-top: 16px;
+    }
+
+    #navbar>nav>a {
+      cursor: pointer;
     }
 </style>

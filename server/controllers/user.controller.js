@@ -3,7 +3,7 @@ const hash = require('../middlewares/hash.middleware');
 const token = require('../middlewares/token.middleware');
 
 module.exports = {
-    insert: (req, res) => {
+    register: (req, res) => {
         let user = new User({
             name: req.body.name,
             password: hash.generate(req.body.password),
@@ -15,12 +15,17 @@ module.exports = {
 
             return res.status(201).send({
                 message: 'Insert new user success',
-                data: user
+                token: token.generate({
+                    id: user._id,
+                    name: user.name,
+                    email: user.email
+                }),
+                name: user.name,
             });
         });
     },
 
-    login: (req, res) => {
+    signin: (req, res) => {
         User.findOne({ email: req.body.email }, (err, user) => {
             if(err) return res.status(500).send({ message: err });
             
@@ -31,11 +36,19 @@ module.exports = {
                         id: user._id,
                         name: user.name,
                         email: user.email
-                    })
+                    }),
+                    name: user.name,
                 });
             else return res.status(401).send({
                 message: 'Login gagal'
             })
         })
-    }
+    },
+
+    verify: (req, res) => {
+        return res.status(200).send({
+            message: 'Verify success',
+            name: req.body.name,
+        });
+    },
 };

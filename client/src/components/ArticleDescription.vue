@@ -1,31 +1,26 @@
 <template>
     <div id="description">
-        <p>{{description}}</p>
+        <p>{{article.description}}</p>
     </div>
 </template>
 
 <script>
-import Axios from 'axios';
-
 export default {
   props: ['id'],
-  name: 'ArticleDescription',
   data() {
     return {
-      description: '',
+        article: null,
     };
   },
-  methods: {
-    getDescription(id) {
-      Axios.get(`http://localhost:3000/articles/${id}`)
-        .then((article) => {
-          this.description = article.data.data.description;
-        });
-    },
-  },
+  name: 'ArticleDescription',
   created() {
-    this.getDescription(this.id);
+      this.article = this.$store.getters.findArticleById(this.id);
   },
+  watch: {
+    id() {
+        this.article = this.$store.getters.findArticleById(this.id);
+    }
+  }
 };
 </script>
 

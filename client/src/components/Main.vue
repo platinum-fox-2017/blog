@@ -1,17 +1,11 @@
 <template>
     <div id="main" class="container">
-        <h1>news</h1>
-        <navbar
-          :articles="articles"
-        ></navbar>
-        <articles
-            :articles="articles"
-        ></articles>
+        <navbar></navbar>
+        <articles></articles>
+        <router-view></router-view>
     </div>
 </template>
 <script>
-
-import Axios from 'axios';
 import Navbar from '@/components/Navbar';
 import Articles from '@/components/Articles';
 
@@ -21,28 +15,12 @@ export default {
     Navbar,
     Articles,
   },
-  data() {
-    return {
-      articles: [],
-    };
-  },
-  methods: {
-    getArticles() {
-      Axios.get('http://localhost:3000/articles/')
-        .then((articles) => {
-          this.articles = articles.data.data;
-        });
-    },
-  },
-  created() {
-    this.getArticles();
-  },
 };
 </script>
 
 <style>
     #main {
-        margin-top: 60px;
+        margin-top: 16px;
         padding-top: 16px;
     }
 

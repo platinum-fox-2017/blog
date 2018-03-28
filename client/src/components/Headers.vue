@@ -2,27 +2,63 @@
     <header id="header">
         <div class="container">
             <div class="logo">
-                <a href="/">Blog</a>
+                <a @click="toHome">Blog</a>
             </div>
             <div class="menu">
-                <a href="/">Article</a>
+              <a data-toggle="modal" data-target="#addModal" v-if="isLogin">add article</a>
+              <add-article></add-article>
             </div>
             <div class="info">
-                <a href="/">login</a>
+              <a v-if="isLogin">{{ username }}</a>
+              <a href="#" @click="logout()" v-if="isLogin">logout</a>
+              <a href="#"
+                data-toggle="modal"
+                data-target="#registerModal" v-if="!isLogin">
+                  register
+              </a>
+              <a href="#" data-toggle="modal" data-target="#loginModal" v-if="!isLogin">login</a>
+              <register></register>
+              <login></login>
             </div>
         </div>
     </header>
 </template>
 
 <script>
+import Login from '@/components/Login';
+import Register from '@/components/Register';
+import AddArticle from '@/components/AddArticle';
+
 export default {
   name: 'Headers',
+  components: {
+    Login,
+    Register,
+    AddArticle,
+  },
+  methods: {
+    toHome() {
+      this.$router.push('/');
+    },
+    logout() {
+      this.$store.commit('setUser', null);
+      delete localStorage.token;
+    },
+  },
+  computed: {
+    isLogin() {
+      return this.$store.getters.isLogin;
+    },
+    username() {
+      return this.$store.getters.username;
+    },
+  },
 };
 </script>
 
 <style>
     #header {
-        position: fixed;
+        /* position: fixed; */
         min-width: 1110px;
         top: 0;
         left: 0;
@@ -59,5 +95,9 @@ export default {
 
     .menu {
         margin-left: 16px;
+    }
+
+    .container a {
+      cursor: pointer;
     }
 </style>

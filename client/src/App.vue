@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <headers></headers>
-    <Main></Main>
+    <!-- <Main></Main> -->
     <router-view></router-view>
   </div>
 </template>
@@ -15,6 +15,10 @@ export default {
   components: {
     Headers,
     Main,
+  },
+  created() {
+    this.$store.dispatch('verify');
+    this.$store.dispatch('getArticle');
   },
 };
 </script>
