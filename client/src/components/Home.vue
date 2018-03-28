@@ -5,14 +5,16 @@
     </div>
     <div class="col-xs-12 col-sm-9">
       <div class="col-sm-10 col-sm-offset-2">
-        <div v-for="(article,index) in articles" :key="index">
+        <div v-for="article in articles" :key="article._id">
           <div class="row">
             <div class="col-xs-12 col-sm-12">
               <div class="well" style="background: #d3d3c1; margin: -14px 0 0 -10px; height: 60px">
                 <div style=" margin: -15px 0 0 0">
                   <div class="col-xs-12">
                     <span>Title: </span>
-                    <span style="font-size: 20px; font-weight: bold;">{{ article.title }}</span>
+                    <router-link :to="'/article/'+article._id">
+                      <span style="font-size: 20px; font-weight: bold;">{{ article.title }}</span>
+                    </router-link>
                   </div>
                   <div class="col-xs-12" style="">
                     <span>Category:</span>
@@ -107,9 +109,9 @@
             </div>
           </div>
           <div class="well" style="height: 150px; margin-bottom: 30px">
-            <div class="col-xs-12 col-sm-12" style="margin: -10px 0 0 -10px">
+            <div class="col-xs-12" style="margin: -10px 0 0 -10px">
               <p>Description: </p>
-              <h3 style="font-size: 1.5em; margin-top: -10px; font-weight: bold;">{{ article.description }}</h3>
+              <h3 style="font-size: 1.2em; margin-top: -10px; font-weight: bold;">{{ article.description.substring(0, 150) }} [...]</h3>
             </div>
           </div>
         </div>

@@ -87,14 +87,6 @@
                           </select>
                         </div>
                       </div>
-                      <div class="form-group">
-                        <div class="col-xs-3">
-                          <label class="control-label">Image URL :</label>
-                        </div>
-                        <div class="col-xs-9">
-                          <input type="text" class="form-control" placeholder="Enter image URL"  v-model="article.imageURL">
-                        </div>
-                      </div>
                       <div class="col-sm-4 col-sm-offset-4">
                         <img :src="article.imageURL" align="middle" height="150px">
                       </div>
@@ -225,7 +217,7 @@ export default {
     this.$store.dispatch('readArticles')
   },
   created: function () {
-    this.$store.getters.getArticles
+    return this.$store.getters.getArticles
   },
   methods: {
     // methCategory

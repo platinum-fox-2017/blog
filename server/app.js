@@ -13,7 +13,7 @@ const app = express();
 app.use(cors());
 
 const db = mongoose.connection;
-const dbURL = 'mongodb://localhost:27018/blog';
+const dbURL = 'mongodb://cbudiman123:cbudiman1234@ds127129.mlab.com:27129/blog';
 mongoose.connect(dbURL, err => {
   if(!err) {
     console.log('Connected to Mongooose');

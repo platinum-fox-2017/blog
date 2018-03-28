@@ -4,6 +4,15 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
+let url = ''
+let LOCAL_DOMAINS = ['localhost', '127.0.0.1']
+if (LOCAL_DOMAINS.includes(window.location.hostname)) {
+  url = 'http://localhost:3004/api'
+  // url = 'http://chandrabudiman.cf:3004/api'
+} else {
+  url = 'http://chandrabudiman.cf:3004/api'
+}
+
 export const store = new Vuex.Store({
   state: {
     users: [],
@@ -26,14 +35,22 @@ export const store = new Vuex.Store({
   },
   mutations: {
     // Users
-    signUp (state, payload) {
-      console.log('mutations/ payload : ', payload)
-      state.users.push(payload)
+    // signUp (state, payload) {
+    //   console.log('mutations/ payload : ', payload)
+    //   state.users.push(payload)
+    // },
+    login (state, payload) {
+      localStorage.setItem('tokenJWT', payload.tokenJWT)
     },
-    getUsers (state, payload) {
-      console.log('mutations/ payload : ', payload)
-      state.users = payload
+    logout (state, payload) {
+      localStorage.clear()
+      state.token = null
+      state.user = null
     },
+    // getUsers (state, payload) {
+    //   console.log('mutations/ payload : ', payload)
+    //   state.users = payload
+    // },
     // mutCategory
     createCategory (state, payload) {
       console.log('mutations/ createCategory/ payload : ', payload)
@@ -82,19 +99,42 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
-    // actUser
+    // actUsers
     signUp ({commit}, payload) {
-      axios.post('http://localhost:3000/api/user', payload)
-        .then(({data}) => {
-          console.log('Actions/ signUp/ data : ', data)
-          commit('signUp', payload)
+      console.log(payload)
+      axios.post(`${url}/user/signup`, {
+        email: payload.email,
+        password: payload.password,
+        name: payload.name
+      })
+        .then(data => {
+          console.log('act/ signUp/ data : ', data)
+          commit('signUp', data)
         })
         .catch(err => {
           console.log(err)
         })
     },
+    login ({commit}, payload) {
+      axios.post(`${url}/user/login`, {
+        email: payload.email,
+        password: payload.password
+      })
+        .then(({data}) => {
+          console.log('act/ login/ data : ', data)
+          console.log('act/ signUp/ data.user : ', data.tokenJWT)
+          commit('login', data)
+          // window.location.href = '/'
+        })
+        .catch(err => {
+          console.log('login error', err)
+        })
+    },
+    logout ({commit}, payload) {
+      commit('logout')
+    },
     getUsers ({commit}, payload) {
-      axios.get('http://localhost:3000/api/user', payload)
+      axios.get(`${url}/user`, payload)
         .then(({data}) => {
           console.log('Actions/ signup/ payload : ', payload)
           commit('getUsers', payload)
@@ -110,7 +150,7 @@ export const store = new Vuex.Store({
         name: payload
       }
       console.log('actions/ createCategory/ payload : ', payload)
-      axios.post('http://localhost:3000/api/category', newCategory)
+      axios.post(`${url}/category`, newCategory)
         .then(({data}) => {
           // console.log('actions/ createCategory/ data : ', data)
           console.log('actions/ createCategory/ newCategory : ', newCategory)
@@ -121,7 +161,7 @@ export const store = new Vuex.Store({
         })
     },
     readCategories ({commit}, payload) {
-      axios.get('http://localhost:3000/api/category')
+      axios.get(`${url}/category`)
         .then(({data}) => {
           console.log('actions/ readCategories/ data.length : ', data.category.length)
           commit('readCategories', data)
@@ -133,7 +173,7 @@ export const store = new Vuex.Store({
     updateCategory ({commit}, payload) {
       let id = payload._id
       console.log('actions/ update/ id : ', id)
-      axios.put(`http://localhost:3000/api/category/${id}`, payload)
+      axios.put(`${url}/category/${id}`, payload)
         .then(({data}) => {
           console.log('actions/ update/ data : ', data)
           console.log('actions/ update/ data : ', data.category)
@@ -147,7 +187,7 @@ export const store = new Vuex.Store({
       let id = payload._id
       console.log('actions/ payload : ', payload)
       console.log('actions/ payload._id : ', payload._id)
-      axios.delete(`http://localhost:3000/api/category/${id}`)
+      axios.delete(`${url}/category/${id}`)
         .then(({data}) => {
           console.log('actions/ delete/ payload : ', payload)
           commit('deleteCategory', id)
@@ -165,7 +205,7 @@ export const store = new Vuex.Store({
         imageURL: payload.imageURL
       }
       console.log('actions/ createArticle/ payload : ', payload)
-      axios.post('http://localhost:3000/api/article', newArticle)
+      axios.post(`${url}/article`, newArticle)
         .then(({data}) => {
           // console.log('actions/ createArticle/ data : ', data)
           console.log('actions/ createArticle/ newArticle : ', newArticle)
@@ -177,7 +217,7 @@ export const store = new Vuex.Store({
         })
     },
     readArticles ({commit}, payload) {
-      axios.get('http://localhost:3000/api/article')
+      axios.get(`${url}/article`)
         .then(({data}) => {
           console.log('actions/ readArticles/ data.length : ', data.article.length)
           commit('readArticles', data)
@@ -190,7 +230,7 @@ export const store = new Vuex.Store({
       let id = payload.id
       console.log('actions/ updateArticle/ payload : ', payload)
       console.log('actions/ updateArticle/ id : ', id)
-      axios.put(`http://localhost:3000/api/article/${id}`, payload)
+      axios.put(`${url}/article/${id}`, payload)
         .then(({data}) => {
           console.log('actions/ update/ data : ', data)
           console.log('actions/ update/ payload : ', payload)
@@ -202,7 +242,7 @@ export const store = new Vuex.Store({
     },
     deleteArticle ({commit}, articleId) {
       console.log('actions/ articleId : ', articleId)
-      axios.delete(`http://localhost:3000/api/article/${articleId}`)
+      axios.delete(`${url}/article/${articleId}`)
         .then(({data}) => {
           console.log('Actions/ deleteArticle/ articleId : ', articleId)
           commit('deleteArticle', articleId)
