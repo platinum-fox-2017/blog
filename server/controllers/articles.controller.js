@@ -77,7 +77,7 @@ module.exports = {
       })
   },
   destroy (req, res) {
-    Article.findOneAndRemove(
+    Article.findByIdAndRemove(
       req.params.id
     )
       .then(() => {
