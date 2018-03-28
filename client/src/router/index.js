@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import SignIn from '@/components/SignIn'
 import Home from '@/components/Home'
+import SignUp from '@/components/SignUp'
+import AddPost from '@/components/AddPost'
+import EditPost from '@/components/EditPost'
 import ArticleMain from '@/components/ArticleMain'
 import ArticleList from '@/components/ArticleList'
 
@@ -11,15 +13,23 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/masuk',
       name: 'SignIn',
       component: SignIn
     }, {
-      path: '/help',
-      name: 'HelloWorld',
-      component: HelloWorld
+      path: '/daftar',
+      name: 'Daftar',
+      component: SignUp
     }, {
-      path: '/home',
+      path: '/add',
+      name: 'Add Post',
+      component: AddPost
+    }, {
+      path: '/edit',
+      name: 'Edit Post',
+      component: EditPost
+    }, {
+      path: '/',
       component: Home,
       children: [
         {
@@ -28,7 +38,7 @@ export default new Router({
           props: true,
           component: ArticleMain
         }, {
-          path: 'article',
+          path: '/',
           name: 'ArticleList',
           component: ArticleList
         }

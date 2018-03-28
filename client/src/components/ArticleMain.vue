@@ -12,7 +12,8 @@
 </div>
 </div>
 <div class="row">
-<button @click="deteleArticle" type="button" name="button" class="btn btn-danger offset-md-9 col-md-2">Delete Post</button>
+<button v-if="article.author._id === user.id" @click="deteleArticle" type="button" name="button" class="btn btn-danger offset-md-9 col-md-2">Delete Post</button>
+<button v-if="article.author._id === user.id" @click="editArticle" type="button" name="button" class="btn btn-info offset-md-9 col-md-2">Edit Post</button>
 </div>
 </div>
 </article>
@@ -22,6 +23,7 @@
 <script>
 import axios from 'axios'
 import moment from 'moment'
+import {mapState} from 'vuex'
 
 import Sidebar from '@/components/Sidebar'
 import HeaderNav from '@/components/HeaderNav'
@@ -37,8 +39,11 @@ export default{
     HeaderNav
   },
   computed: {
+    ...mapState([
+      'user'
+    ]),
     author: function () {
-      return 'by ' + this.article.author
+      return 'by ' + this.article.author.name
     }
   },
   props: ['id'],
@@ -65,8 +70,12 @@ export default{
         method: 'delete',
         url: `http://localhost:3000/api/articles/${this.id}`
       }).then(data => {
-        this.$router.push({path: '/home/article'})
+        this.$store.dispatch('getArticles')
+        this.$router.push('/')
       })
+    },
+    editArticle: function () {
+
     }
   },
   watch: {

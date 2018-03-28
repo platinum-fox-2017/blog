@@ -3,7 +3,10 @@ const Schema = mongoose.Schema;
 
 const articleSchema = new Schema({
   title: String,
-  author: String,
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
   content: String,
 },{
   timestamps: true,

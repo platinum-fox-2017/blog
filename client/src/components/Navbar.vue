@@ -1,7 +1,7 @@
 <template>
 <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
 <div class="container">
-<router-link class="navbar-brand" :to="{ path: '/home/article'}">
+<router-link class="navbar-brand" :to="{ path: '/'}">
 Madiun
 </router-link>
 <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,15 +10,40 @@ Menu
 </button>
 <div class="collapse navbar-collapse" id="navbarResponsive">
 <ul class="navbar-nav ml-auto">
-<li class="nav-item">
-<a class="nav-link" href="index.html">Home</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="about.html">Add Post</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="contact.html">Contact</a>
-</li>
+  <router-link :to="{path: '/'}">
+  <li class="nav-item">
+  <a class="nav-link btn">Home</a>
+  </li>
+  </router-link>
+
+  <router-link :to="{path: '/add'}" v-if='user.id !== "" && user.id !== null'>
+  <li class="nav-item">
+  <a class="nav-link btn">Add Post</a>
+  </li>
+  </router-link>
+
+  <router-link :to="{path: '/'}" v-if='user.id !== "" && user.id !== null'>
+  <li class="nav-item">
+  <a class="nav-link btn">{{user.username}}</a>
+  </li>
+  </router-link>
+  <router-link :to="{path: '/'}" v-if='user.id !== "" && user.id !== null'>
+  <li @click='emitLogout' class="nav-item">
+  <a class="nav-link btn">Logout</a>
+  </li>
+  </router-link>
+
+  <router-link :to="{path: '/masuk'}" v-if='user.id === "" || user.id === null'>
+  <li class="nav-item">
+  <a class="nav-link btn">Login</a>
+  </li>
+  </router-link>
+
+   <router-link :to="{path: '/daftar'}" v-if='user.id === "" || user.id === null'>
+  <li class="nav-item">
+  <a class="nav-link btn">Sign Up</a>
+  </li>
+  </router-link>
 </ul>
 </div>
 </div>
@@ -26,7 +51,25 @@ Menu
 </template>
 
 <script>
+import {mapState} from 'vuex'
+
 export default{
+  computed: {
+    ...mapState([
+      'user'
+    ])
+  },
+  methods: {
+    emitLogout: function () {
+      localStorage.setItem('token', '')
+      localStorage.setItem('id', '')
+      localStorage.setItem('username', '')
+      localStorage.setItem('email', '')
+      localStorage.setItem('name', '')
+      // this.$router.push({path: '/'})
+      this.$store.dispatch('clearUser')
+    }
+  }
 }
 </script>
 

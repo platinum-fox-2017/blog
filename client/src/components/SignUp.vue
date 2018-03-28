@@ -29,35 +29,35 @@
 </template>
 
 <script>
-  import Navbar from '@/components/Navbar'
+import Navbar from '@/components/Navbar'
 
-  export default {
-    name: 'SignUp',
-    components: {
-      Navbar
-    },
-    data () {
-      return {
-        signUpData: {
-          email: '',
-          password: '',
-          username: '',
-          name: ''
-        }
-      }
-    },
-    methods: {
-      emitSignup: function () {
-        console.log(this.signUpData)
-        this.$store.dispatch('emitSignup', this.signUpData)
-        this.signUpData.email = ''
-        this.signUpData.password = ''
-        this.signUpData.name = ''
-        this.signUpData.username = ''
-        this.$router.push({path: '/'})
+export default {
+  name: 'SignUp',
+  components: {
+    Navbar
+  },
+  data () {
+    return {
+      signUpData: {
+        email: '',
+        password: '',
+        username: '',
+        name: ''
       }
     }
+  },
+  methods: {
+    emitSignup: function () {
+      console.log(this.signUpData)
+      this.$store.dispatch('emitSignup', this.signUpData)
+      this.signUpData.email = ''
+      this.signUpData.password = ''
+      this.signUpData.name = ''
+      this.signUpData.username = ''
+      this.$router.push({path: '/'})
+    }
   }
+}
 </script>
 
 <style scoped>

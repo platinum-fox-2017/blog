@@ -4,6 +4,8 @@ module.exports = {
   findAll (req, res) {
     Article
       .find()
+      .populate('author')
+      .sort('-createdAt')
       .exec()
       .then(data => {
         return res.status(200).json({
@@ -22,6 +24,7 @@ module.exports = {
     Article.findOne({
       _id : req.params.id
     })
+      .populate('author')
       .exec()
       .then(data => {
         return res.status(200).json({

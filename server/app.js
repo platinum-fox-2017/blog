@@ -11,7 +11,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var articles = require('./routes/articles');
 
-const dbUrl = 'mongodb://localhost:27017/blog';
+const dbUrl = 'mongodb://fadhilmch:123456@ds125195.mlab.com:25195/madiun';
 const db = mongoose.connection;
 
 var app = express();

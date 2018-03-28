@@ -12,7 +12,7 @@
 </h2>
 </router-link>
 <p class="post-meta">Posted by
-<a>{{article.author}}</a>
+<a>{{article.author.name}}</a>
 on {{stringDate(article.createdAt)}}</p>
 </div>
 <hr>
@@ -26,6 +26,7 @@ on {{stringDate(article.createdAt)}}</p>
 <script>
 import moment from 'moment'
 import axios from 'axios'
+import {mapState} from 'vuex'
 
 import HeaderNav from '@/components/HeaderNav'
 
@@ -36,13 +37,14 @@ export default {
   },
   data () {
     return {
-      articles: [],
       title: 'Madiun',
       description: 'write and share stories that matter'
     }
   },
-  created: function () {
-    this.fetchArticlesData()
+  computed: {
+    ...mapState([
+      'articles'
+    ])
   },
   methods: {
     fetchArticlesData: function () {
