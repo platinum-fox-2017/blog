@@ -21,7 +21,7 @@ import ReadMore from 'vue-read-more';
 
 window.fbAsyncInit = function () {
   window.FB.init({
-    appId: '592784331071735',
+    appId: '1767231953328127',
     cookie: true,
     xfbml: true,
     version: 'v2.12'
